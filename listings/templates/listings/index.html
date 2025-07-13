@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusNest - Student Accommodation Finder</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --info: #4895ef;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--light);
+            opacity: 0.9;
+        }
+        
+        .search-container {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/api/placeholder/1600/500");
+            background-size: cover;
+            background-position: center;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 0 2rem;
+        }
+        
+        .search-container h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-container p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+        }
+        
+        .search-box {
+            background: white;
+            border-radius: 50px;
+            padding: 0.8rem;
+            display: flex;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-box input, .search-box select {
+            flex: 1;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .search-box select {
+            border-left: 1px solid #eee;
+            border-right: 1px solid #eee;
+        }
+        
+        .search-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .search-button:hover {
+            background-color: var(--secondary);
+        }
+        
+        .features {
+            padding: 4rem 2rem;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background-color: var(--light);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-img {
+            height: 200px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+        }
+        
+        .feature-content {
+            padding: 1.5rem;
+        }
+        
+        .feature-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+        }
+        
+        .feature-content p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+        
+        .accommodations {
+            padding: 4rem 2rem;
+            background-color: #f8f9fa;
+        }
+        
+        .accommodations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .accommodation-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .accommodation-img {
+            height: 200px;
+            background-color: #eee;
+            position: relative;
+        }
+        
+        .accommodation-type {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .accommodation-content {
+            padding: 1.5rem;
+        }
+        
+        .accommodation-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .accommodation-location {
+            display: flex;
+            align-items: center;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .accommodation-location i {
+            margin-right: 0.4rem;
+        }
+        
+        .accommodation-features {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .accommodation-feature {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .accommodation-feature i {
+            margin-right: 0.3rem;
+        }
+        
+        .accommodation-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stars {
+            color: #ffc107;
+            margin-right: 0.5rem;
+        }
+        
+        .review-count {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .accommodation-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .accommodation-price span {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: normal;
+        }
+        
+        .view-button {
+            background-color: var(--light);
+            color: var(--dark);
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .view-button:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .testimonials {
+            padding: 4rem 2rem;
+            background-color: white;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-card {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: var(--dark);
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 1rem;
+        }
+        
+        .author-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .author-info p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .cta {
+            padding: 5rem 2rem;
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .primary-button {
+            background-color: white;
+            color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .primary-button:hover {
+            background-color: var(--light);
+        }
+        
+        .secondary-button {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .secondary-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        footer {
+            background-color: #212529;
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-contact p {
+            margin-bottom: 1rem;
+            color: #adb5bd;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-contact i {
+            margin-right: 0.8rem;
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: #343a40;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #343a40;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+                border-radius: 8px;
+            }
+            
+            .search-box input, .search-box select {
+                margin-bottom: 0.5rem;
+            }
+            
+            .search-button {
+                width: 100%;
+            }
+            
+            .feature-card, .accommodation-card, .testimonial-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-icon">🏠</span> CampusNest
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Accommodations</a></li>
+                <li><a href="#">PG Reviews</a></li>
+                <li><a href="#">For Owners</a></li>
+                <li><a href="#">Login / Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="search-container">
+        <h1>Find Your Perfect Student Accommodation</h1>
+        <p>Discover affordable PGs, hostels, and apartments near your college or university</p>
+        <div class="search-box">
+            <input type="text" placeholder="Enter college, university or area">
+            <select>
+                <option>Accommodation Type</option>
+                <option>PG</option>
+                <option>Hostel</option>
+                <option>Apartment</option>
+                <option>Shared Flat</option>
+            </select>
+            <select>
+                <option>Budget</option>
+                <option>Under ₹5,000</option>
+                <option>₹5,000 - ₹10,000</option>
+                <option>₹10,000 - ₹15,000</option>
+                <option>₹15,000+</option>
+            </select>
+            <button class="search-button">Search</button>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="section-title">
+            <h2>Why Choose CampusNest?</h2>
+            <p>We make finding student accommodation easy, safe, and reliable</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-img">🔍</div>
+                <div class="feature-content">
+                    <h3>Verified Listings</h3>
+                    <p>All our accommodations are verified by our team to ensure quality and safety for students.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-img">⭐</div>
+                <div class="feature-content">
+                    <h3>Genuine Reviews</h3>
+                    <p>Read authentic reviews from real students about their PG and accommodation experiences.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-img">💰</div>
+                <div class="feature-content">
+                    <h3>No Brokerage</h3>
+                    <p>Connect directly with property owners and PGs without paying any brokerage fees.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="accommodations">
+        <div class="section-title">
+            <h2>Featured Accommodations</h2>
+            <p>Explore top-rated student accommodations across popular education hubs</p>
+        </div>
+        <div class="accommodations-grid">
+            <div class="accommodation-card">
+                <div class="accommodation-img">
+                    <span class="accommodation-type">PG</span>
+                </div>
+                <div class="accommodation-content">
+                    <h3>Sunshine PG for Boys</h3>
+                    <div class="accommodation-location">
+                        <i>📍</i> Near Technical University, Sector 15
+                    </div>
+                    <div class="accommodation-features">
+                        <div class="accommodation-feature">
+                            <i>🛏️</i> 2,3 Sharing
+                        </div>
+                        <div class="accommodation-feature">
+                            <i>🍽️</i> Food Included
+                        </div>
+                        <div class="accommodation-feature">
+                            <i>🌐</i> WiFi
+                        </div>
+                    </div>
+                    <div class="accommodation-rating">
+                        <div class="stars">★★★★☆</div>
+                        <div class="review-count">(42 reviews)</div>
+                    </div>
+                    <div class="accommodation-price">
+                        ₹8,500 <span>/ month</span>
+                    </div>
+                    <button class="view-button">View Details</button>
+                </div>
+            </div>
+            <div class="accommodation-card">
+                <div class="accommodation-img">
+                    <span class="accommodation-type">Hostel</span>
+                </div>
+                <div class="accommodation-content">
+                    <h3>Green Valley Girls Hostel</h3>
+                    <div class="accommodation-location">
+                        <i>📍</i> College Road, Near City Center
+                    </div>
+                    <div class="accommodation-features">
+                        <div class="accommodation-feature">
+                            <i>🛏️</i> 2,4 Sharing
+                        </div>
+                        <div class="accommodation-feature">
+                            <i>🍽️</i> Food Included
+                        </div>
+                        <div class="accommodation-feature">
+                            <i>🏋️</i> Gym
+                        </div>
+                    </div>
+                    <div class="accommodation-rating">
+                        <div class="stars">★★★★★</div>
+                        <div class="review-count">(67 reviews)</div>
+                    </div>
+                    <div class="accommodation-price">
+                        ₹9,800 <span>/ month</span>
+                    </div>
+                    <button class="view-button">View Details</button>
+                </div>
+            </div>
+            <div class="accommodation-card">
+                <div class="accommodation-img">
+                    <span class="accommodation-type">Apartment</span>
+                </div>
+                <div class="accommodation-content">
+                    <h3>Student Apartments</h3>
+                    <div class="accommodation-location">
+                        <i>📍</i> Tech Park Road, Central Area
+                    </div>
+                    <div class="accommodation-features">
+                        <div class="accommodation-feature">
+                            <i>🛏️</i> 3 Bedrooms
+                        </div>
+                        <div class="accommodation-feature">
+                            <i>🍽️</i> Kitchen
+                        </div>
+                        <div class="accommodation-feature">
+                            <i>🏊</i> Pool
+                        </div>
+                    </div>
+                    <div class="accommodation-rating">
+                        <div class="stars">★★★★☆</div>
+                        <div class="review-count">(23 reviews)</div>
+                    </div>
+                    <div class="accommodation-price">
+                        ₹15,000 <span>/ month</span>
+                    </div>
+                    <button class="view-button">View Details</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="section-title">
+            <h2>What Students Say</h2>
+            <p>Hear from students who found their perfect stay through CampusNest</p>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-text">
+                    "Finding accommodation near my college was so difficult until I discovered CampusNest. The verified reviews helped me choose a great PG that fit my budget and needs. Highly recommended!"
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-img"></div>
+                    <div class="author-info">
+                        <h4>Priya Sharma</h4>
+                        <p>Engineering Student</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-text">
+                    "As a student from another city, I was worried about finding a safe place to stay. Thanks to CampusNest, I found a well-maintained hostel with good food and amenities. The review system was spot on!"
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-img"></div>
+                    <div class="author-info">
+                        <h4>Rahul Mehra</h4>
+                        <p>MBA Student</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-text">
+                    "I shared an apartment with three other students that I found through CampusNest. The platform made it easy to connect with like-minded roommates and find an affordable place close to our university."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-img"></div>
+                    <div class="author-info">
+                        <h4>Ananya Patel</h4>
+                        <p>Medical Student</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Ready to Find Your Perfect Student Accommodation?</h2>
+        <p>Join thousands of students who found their ideal place to stay through CampusNest. Create your free account today!</p>
+        <div class="cta-buttons">
+            <button class="primary-button">Sign Up For Free</button>
+            <button class="secondary-button">List Your Property</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>CampusNest</h3>
+                <p>The #1 platform for student accommodation in India. Find PGs, hostels, and apartments near colleges and universities.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">f</a>
+                    <a href="#" class="social-link">in</a>
+                    <a href="#" class="social-link">ig</a>
+                    <a href="#" class="social-link">tw</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Accommodations</a></li>
+                    <li><a href="#">PG Reviews</a></li>
+                    <li><a href="#">List Your Property</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Top Cities</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Delhi/NCR</a></li>
+                    <li><a href="#">Mumbai</a></li>
+                    <li><a href="#">Bangalore</a></li>
+                    <li><a href="#">Pune</a></li>
+                    <li><a href="#">Hyderabad</a></li>
+                    <li><a href="#">Chennai</a></li>
+                </ul>
+            </div>
+            <div class="footer-column footer-contact">
+                <h3>Contact Us</h3>
+                <p><i>📱</i> +91 9002640769</p>
+                <p><i>✉️</i> support@campusnest.com</p>
+                <p><i>🏢</i> 123, Tech Park, Electronic City, Bangalore - 560100</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 CampusNest. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
