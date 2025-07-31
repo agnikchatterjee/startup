@@ -1,4 +1,4 @@
-# 🏠 Student Housing Finder
+# 🏠 Student Rental PG finder
 A web platform where students can find PGs or apartments for rent near their colleges, read honest reviews from past residents, and make informed decisions — all in one place.
 📌 Features
 🔐 User Signup/Login system
