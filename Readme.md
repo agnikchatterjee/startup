@@ -56,12 +56,8 @@ python manage.py runserver
 
 7.Visit http://127.0.0.1:8000/ in your browser 🚀
 
-# 📷 Screenshots (optional)
-
-
 # 🙋‍♂️ Author
 Agnik Chatterjee
-GitHub Profile (replace with your actual link)
 
 # 📄 License
 This project is for internal/academic use only. A proper open-source license will be added once it's ready for public release.
